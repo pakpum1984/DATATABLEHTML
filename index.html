@@ -12,7 +12,7 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <style>
     #container {
-      max-width: 1000px;
+      max-width: auto;
       margin: 5vh auto;
       border: 2px solid #ffffff;
       /* สีน้ำเงิน สามารถเปลี่ยนสีได้ */
@@ -52,6 +52,10 @@
             <label for="editNickname" class="form-label">ชื่อเล่น:</label>
             <input type="text" class="form-control" id="editNickname">
           </div>
+          <div class="mb-3">
+            <label for="addNickname" class="form-label">เบอร์โทร</label>
+            <input type="text" class="form-control" id="editTel" name="editTel">
+          </div>
       </div>
 
       <div class="modal-footer">
@@ -83,7 +87,10 @@
               <label for="addNickname" class="form-label">ชื่อเล่น</label>
               <input type="text" class="form-control" id="addNickname" name="addNickname">
             </div>
-          
+            <div class="mb-3">
+              <label for="addNickname" class="form-label">เบอร์โทร</label>
+              <input type="text" class="form-control" id="addTel" name="addTel">
+            </div>
          
         </div>
          <div class="modal-footer">
@@ -147,6 +154,7 @@
       $('#editId').val('');
       $('#editName').val('');
       $('#editNickname').val('');
+      $('#editTel').val('');
 
       // แสดง modal เพื่อเพิ่มข้อมูล
       $('#addDataModal').modal('show');
@@ -172,6 +180,7 @@
       
         var addName = document.getElementById('addName').value;
         var addNickname = document.getElementById('addNickname').value;
+        var addTel = document.getElementById('addTel').value;
 
 
         if (addName == "") {
@@ -188,6 +197,15 @@
           position: 'center',
           icon: 'error',
           title: '<h4>กรุณากรอกชื่อเล่นของท่าน</h4>',
+          showConfirmButton: true,
+          confirmButtonText: 'OK',
+        });
+        return;
+      }  else if (addTel == "") {
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: '<h4>กรุณากรอกเบอร์โทรของท่าน</h4>',
           showConfirmButton: true,
           confirmButtonText: 'OK',
         });
@@ -238,12 +256,14 @@
       var id = $('#addId').val();
       var name = $('#addName').val();
       var nickname = $('#addNickname').val();
+      var telnum = $('#addTel').val();
 
       // สร้าง JSON object ที่มีข้อมูลใหม่
       var newData = {
         'ไอดี': id,
         'ชื่อ': name,
-        'ชื่อเล่น': nickname
+        'ชื่อเล่น': nickname,
+        'เบอร์โทร': telnum
       };
 
       // แปลง JSON object เป็น string JSON
@@ -286,6 +306,7 @@ function editData(button) {
   $('#editId').val(row['ไอดี']);
   $('#editName').val(row['ชื่อ']);
   $('#editNickname').val(row['ชื่อเล่น']);
+   $('#editTel').val(row['เบอร์โทร']);
 
   // กำหนดค่า index ของแถวที่ต้องการแก้ไขให้กับ modal
   $('#editModal').data('index', index);
@@ -306,12 +327,14 @@ function editData(button) {
       var id = $('#editId').val();
       var name = $('#editName').val();
       var nickname = $('#editNickname').val();
+      var telnum = $('#editTel').val();
 
       // สร้าง JSON object ที่มีข้อมูลที่แก้ไขแล้ว
       var editedData = {
         'ไอดี': id,
         'ชื่อ': name,
-        'ชื่อเล่น': nickname
+        'ชื่อเล่น': nickname,
+        'เบอร์โทร': telnum
       };
 
       // แปลง JSON object เป็น string JSON
@@ -361,6 +384,7 @@ $(document).ready(function() {
         { title: 'ไอดี' },
         { title: 'ชื่อ' },
         { title: 'ชื่อเล่น' },
+        { title: 'เบอร์โทร' },
         { title: 'แก้ไข' }
        
       ];
@@ -376,6 +400,7 @@ $(document).ready(function() {
           row['ไอดี'],
           row['ชื่อ'],
           row['ชื่อเล่น'],
+          row['เบอร์โทร'],
           actionButtons
         ];
         tableRows.push(rowData);
