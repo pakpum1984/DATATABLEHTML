@@ -29,10 +29,40 @@
       align-items: center;
       height: 100%; /* ให้ Spinner ทำเต็มส่วนสูงของ #dataTable */
     }
-
+ 
   </style>
 </head>
 <body>
+
+
+
+   <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
+     <div class="container-fluid">
+       <a class="navbar-brand" href="javascript:void(0)">DATATABLE FORM HTML</a>
+       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+         <span class="navbar-toggler-icon"></span>
+       </button>
+       <div class="collapse navbar-collapse" id="mynavbar">
+         <ul class="navbar-nav me-auto">
+           <!-- <li class="nav-item">
+             <a class="nav-link" href="javascript:void(0)">Link</a>
+           </li>
+           <li class="nav-item">
+             <a class="nav-link" href="javascript:void(0)">Link</a>
+           </li>
+           <li class="nav-item">
+             <a class="nav-link" href="javascript:void(0)">Link</a>
+           </li> -->
+         </ul>
+         <form class="d-flex">
+           <!-- <input class="form-control me-2" type="text" placeholder="Search"> -->
+           <button class="btn btn-warning" type="button">เพิ่มข้อมูล</button>
+         </form>
+       </div>
+     </div>
+   </nav>
+
+  
 <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -42,10 +72,9 @@
       </div>
       <div class="modal-body">
         <form id="myFormsave" onsubmit="saveData(event)" class="row g-2">
-          <div class="mb-3">
-            <label for="editId" class="form-label">ไอดี:</label>
-            <input type="text" class="form-control" id="editId" readonly>
-          </div>
+        
+            <input type="text" class="form-control" id="editId" readonly hidden>
+         
           <div class="mb-3">
             <label for="editName" class="form-label">ชื่อ:</label>
             <input type="text" class="form-control" id="editName">
@@ -56,7 +85,7 @@
           </div>
           <div class="mb-3">
             <label for="addNickname" class="form-label">เบอร์โทร</label>
-            <input type="text" class="form-control" id="editTel" name="editTel">
+            <input type="text" class="form-control" id="editTel"  maxlength="10" name="editTel">
           </div>
       </div>
 
@@ -91,7 +120,7 @@
             </div>
             <div class="mb-3">
               <label for="addNickname" class="form-label">เบอร์โทร</label>
-              <input type="text" class="form-control" id="addTel" name="addTel">
+              <input type="text" class="form-control" id="addTel" maxlength="10" name="addTel">
             </div>
          
         </div>
@@ -105,35 +134,9 @@
   </div>
 
  
-
-     <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
-       <div class="container-fluid">
-         <a class="navbar-brand" href="javascript:void(0)">DATATABLE FORM HTML</a>
-         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
-           <span class="navbar-toggler-icon"></span>
-         </button>
-         <div class="collapse navbar-collapse" id="mynavbar">
-           <ul class="navbar-nav me-auto">
-             <!-- <li class="nav-item">
-               <a class="nav-link" href="javascript:void(0)">Link</a>
-             </li>
-             <li class="nav-item">
-               <a class="nav-link" href="javascript:void(0)">Link</a>
-             </li>
-             <li class="nav-item">
-               <a class="nav-link" href="javascript:void(0)">Link</a>
-             </li> -->
-           </ul>
-           <form class="d-flex">
-             <!-- <input class="form-control me-2" type="text" placeholder="Search"> -->
-             <button class="btn btn-warning" type="button">เพิ่มข้อมูล</button>
-           </form>
-         </div>
-       </div>
-     </nav>
    <div class="container">
     <div class="card table-responsive" id="container">
-    <table id="dataTable" class="table table-striped table-bordered">
+    <table id="dataTable" class="table table-striped table-bordered cell-border compact stripe">
       <thead class="bg-success text-white">
         <tr id="tableHeader"></tr>
       </thead>
@@ -162,11 +165,7 @@
       $('#addDataModal').modal('show');
     });
 
-    // เมื่อคลิกที่ปุ่ม "บันทึก" ใน modal เพื่อเพิ่มข้อมูล
-    $('#saveNewData').click(function() {
-      // เรียกใช้ฟังก์ชัน saveData() เพื่อบันทึกข้อมูล
-      saveNewData();
-    });
+   
 
 
     function booksubmitForm() {
@@ -249,55 +248,7 @@
         });
     }
 
-    
-    // เพิ่มฟังก์ชันเพื่อบันทึกข้อมูลใหม่
-    function saveNewData(event) {
-      event.preventDefault(); // หยุดการส่งค่าฟอร์มทางเบราว์เซอร์
 
-      // ดึงข้อมูลที่ป้อนจากฟอร์มใน modal
-      var id = $('#addId').val();
-      var name = $('#addName').val();
-      var nickname = $('#addNickname').val();
-      var telnum = $('#addTel').val();
-
-      // สร้าง JSON object ที่มีข้อมูลใหม่
-      var newData = {
-        'ไอดี': id,
-        'ชื่อ': name,
-        'ชื่อเล่น': nickname,
-        'เบอร์โทร': telnum
-      };
-
-      // แปลง JSON object เป็น string JSON
-      var jsonData = JSON.stringify(newData);
-
-      // ส่งข้อมูลใหม่ไปยัง Google Apps Script ผ่าน fetch
-      fetch('https://script.google.com/macros/s/AKfycbxGFB7EENp_2r9cR5W0G1XbBsvGHrU1WEIXwFtXJCqcYJRyuBDoC41tMlIrQhHScTlE/exec', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: jsonData
-      })
-      .then(response => response.json())
-      .then(data => {
-        console.log('New data saved successfully:', data);
-        // ปิด modal เมื่อบันทึกข้อมูลเสร็จสิ้น
-        $('#addDataModal').modal('hide');
-        // รีโหลดหน้าเพื่อแสดงข้อมูลที่ถูกเพิ่ม
-        location.reload();
-      })
-      .catch(error => {
-        console.error('Error saving new data:', error);
-        // แสดงข้อความแจ้งเตือนหากเกิดข้อผิดพลาดในการบันทึกข้อมูล
-        alert('An error occurred while saving new data. Please try again later.');
-      });
-    }
-
-    // ใช้ jQuery เพื่อระบุเหตุการณ์ที่เกิดขึ้นเมื่อฟอร์มเพิ่มข้อมูลถูกส่ง
-    $(document).ready(function() {
-      $('#addDataForm').submit(saveNewData);
-    });
 
     
 function editData(button) {
@@ -346,7 +297,7 @@ function editData(button) {
         method: 'POST',
         body: jsonData // ข้อมูลที่แก้ไข
       })
-      .then(response => response.json()) // เปลี่ยนจาก response.text() เป็น response.json() เนื่องจากข้อมูลที่ส่งกลับมาเป็น JSON
+      .then(response => response.json())
       .then(data => {
         document.getElementById("myFormsave").reset();
        Swal.fire({
@@ -430,7 +381,7 @@ $(document).ready(function() {
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "ใช่ต้องการลบข้อมูล"
+        confirmButtonText: "ใช่ลบข้อมูล"
       }).then((result) => {
         if (result.isConfirmed) {
           Swal.fire({
@@ -449,8 +400,10 @@ $(document).ready(function() {
               if (response.success) {
                 Swal.fire({
                   //title: "ลบข้อมูล",
-                  text: "ลบข้อมุลเรียบร้อยแล้ว",
-                  icon: "success"
+                  text: "ลบข้อมูลเรียบร้อยแล้ว",
+                  icon: "success",
+                  showConfirmButton: false,
+                  timer: 1500
                 }).then(() => {
                   // รีโหลดหน้าหลังจากที่ข้อมูลถูกลบเรียบร้อย
                   location.reload();
