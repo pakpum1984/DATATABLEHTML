@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HTMLDATATABLE</title>
+  <title>DATATABLE FORM HTML</title>
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
   
@@ -20,6 +20,12 @@
       border-radius: 8px;
       box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
       /* เพิ่มเงาดำ */
+    }
+    .spinner-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%; /* ให้ Spinner ทำเต็มส่วนสูงของ #dataTable */
     }
 
   </style>
@@ -117,11 +123,8 @@
        </div>
      </nav>
    <div class="container">
-    <div class="card" id="container">
-       <!-- <button type="button"  style="width: 100px;float: right;" class="btn btn-primary">เพิ่มข้อมูล</button> -->
-      <h4 class="text-center mb-4">DATATABLE FORM HTML</h4>
-     
-    <table id="dataTable" class="table table-striped">
+    <div class="card table-responsive" id="container">
+    <table id="dataTable" class="table table-striped table-bordered">
       <thead class="bg-success text-white">
         <tr id="tableHeader"></tr>
       </thead>
@@ -345,39 +348,43 @@ function editData(button) {
 
     var googleScriptUrl = 'https://script.google.com/macros/s/AKfycbwQLkv0w7KE3cLbb1DBPwjvG0oWxt-vZmG8D4yzI4omfmSoOkDdsXsQFVbxz1-XCkXZOw/exec'; // ใส่ URL ของ Google Apps Script ที่คุณสร้าง
 $(document).ready(function() {
+  $('#dataTable').html('<div class="spinner-container"><div class="spinner-border text-info me-2" role="status"></div> กำลังโหลดข้อมูล...</div>');
+
   $.ajax({
     url: googleScriptUrl,
     dataType: 'json',
     success: function(data) {
+      // เมื่อโหลดข้อมูลเสร็จสิ้นซ่อน spinner
+      $('#dataTable').empty();
+
       var headerRow = [
         { title: 'ไอดี' },
         { title: 'ชื่อ' },
         { title: 'ชื่อเล่น' },
-        { title: 'แก้ไข' },
-        { title: 'ลบ' } // เพิ่มหัวข้อสำหรับปุ่มลบ
+        { title: 'แก้ไข' }
+       
       ];
       var tableRows = [];
 
       $.each(data, function(index, row) {
         var editButton = '<button type="button" onclick="editData(this);" class="btn btn-success edit-button" data-bs-toggle="modal" data-bs-target="#editModal" data-index="' + index + '" data-row=\'' + JSON.stringify(row) + '\'><span>แก้ไข</span></button>';
-        
-        // สร้างปุ่ม deleteButton และกำหนด onclick attribute ให้เรียกใช้ฟังก์ชั่น deleteData
-  var deleteButton = '<button type="button" onclick="deleteData(\'' + row['ไอดี'] + '\');" class="btn btn-danger delete-button"><span>ลบ</span></button>';
+        var deleteButton = '<button type="button" onclick="deleteData(\'' + row['ไอดี'] + '\');" class="btn btn-danger delete-button"><span>ลบ</span></button>';
 
+        var actionButtons = '<div class="btn-group" role="group">' + editButton + deleteButton + '</div>';
 
         var rowData = [
           row['ไอดี'],
           row['ชื่อ'],
           row['ชื่อเล่น'],
-          editButton,
-          deleteButton // เพิ่มปุ่ม deleteButton ไปยังข้อมูลแต่ละแถว
+          actionButtons
         ];
         tableRows.push(rowData);
       });
 
       $('#dataTable').DataTable({
         data: tableRows,
-        columns: headerRow
+        columns: headerRow,
+        dom: 't'
       });
     },
     error: function(xhr, status, error) {
