@@ -6,7 +6,9 @@
   <title>DATATABLE FORM HTML</title>
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+  integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA=="
+  crossorigin="anonymous" referrerpolicy="no-referrer" />
   <!-- DataTables CSS -->
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -391,8 +393,8 @@ $(document).ready(function() {
       var tableRows = [];
 
       $.each(data, function(index, row) {
-        var editButton = '<button type="button" onclick="editData(this);" class="btn btn-success edit-button" data-bs-toggle="modal" data-bs-target="#editModal" data-index="' + index + '" data-row=\'' + JSON.stringify(row) + '\'><span>แก้ไข</span></button>';
-        var deleteButton = '<button type="button" onclick="deleteData(\'' + row['ไอดี'] + '\');" class="btn btn-danger delete-button"><span>ลบ</span></button>';
+        var editButton = '<button type="button" onclick="editData(this);" class="btn btn-success edit-button" data-bs-toggle="modal" data-bs-target="#editModal" data-index="' + index + '" data-row=\'' + JSON.stringify(row) + '\'><i class="fa-solid fa-pen-to-square" style="color: white;"></i></button>';
+        var deleteButton = '<button type="button" onclick="deleteData(\'' + row['ไอดี'] + '\');" class="btn btn-danger delete-button"><i class="fa-solid fa-trash-can" style="color: white;"></i></button>';
 
         var actionButtons = '<div class="btn-group" role="group">' + editButton + deleteButton + '</div>';
 
